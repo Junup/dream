@@ -95,7 +95,7 @@
     * en ：英文
 * 说明：手指松开后点击态保留时间，单位毫秒
 
-### session-from
+### session-from》
 * 类型：String
 * 默认值：无
 * 说明：会话来源

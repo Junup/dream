@@ -10,7 +10,7 @@
         <div class="weui-cell">
           <div class="weui-cell__bd">
             <textarea class placeholder="请输入您的梦境" v-model="dream" style="height: 3.3em" />
-            <div class="weui-textarea-counter">0/200</div>
+            <div class="weui-textarea-counter">{{dream.length}}/200</div>
           </div>
         </div>
       </div>
@@ -28,25 +28,59 @@ export default {
       dream: ""
     }
   },
+  created() {
+    console.log(1)
+    // 点击按钮触发登录事件
+    wx.login({
+      success: res => {
+        // 获取临时登录凭证
+        const code = res.code;
+        // 获取用户信息
+        wx.getUserInfo({
+          success: res => {
+            const userInfo = res.userInfo;
+            console.log(userInfo);
+            // 将 code 和 userInfo 发送给后台服务器
+            wx.request({
+              url: 'https://ai-api.aitools666.com/login',
+              method: 'get',
+              data: {
+                code: code
+              },
+              success: res => {
+                // 将服务器返回的自定义登录态 token 存储到本地
+                wx.setStorageSync('token', res.data.access_token);
+              }
+            });
+          }
+        });
+      }
+    });
+  },
   methods: {
     showTopTipsFun() {
-      wx.login({
-        success: (Result) => {
-          console.log(Result.code)
-        }
-      })
-      wx.getUserProfile({
-        desc: '获取用户信息',
-        lang: 'zh_CN',
-        success: function(res) {
-          console.log(res);
-        },
-        fail: function(e) {
-          console.log(e);
-        }
-      })
+      if (!this.dream) {
+        wx.showToast({
+          title: '请填写您的梦境',
+          icon: 'error',
+          duration: 3000,
+          mask: true
+        });
+        return false
+      }
+      const self = this
       wx.navigateTo({
         url: '/pages/test/main'
+      })
+      console.log(self.dream)
+      wx.sendSocketMessage({
+        data: JSON.stringify({
+          "msg": self.dream,
+          "act": "start_generate",
+          "payload": {
+            "template_name": "jiemeng"
+          }
+        })
       })
     }
   }
