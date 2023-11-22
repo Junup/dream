@@ -22,32 +22,36 @@ export default {
 
   },
   created() {
-    console.log(2, this.AImessage)
-    const token = wx.getStorageSync('token');
-    const self = this
-    console.log(token)
-    if (token) {
-      wx.connectSocket({
-        url: 'wss://ai-api.aitools666.com/chat',
-        header: {
-          'authorization': token
-        }
-      })
-      wx.onSocketOpen(function(res) {
-        console.log('WebSocket连接已打开！')
-      })
-      wx.onSocketMessage(function(res) {
-        self.AImessage = self.AImessage + JSON.parse(res.data).message
-        self.isOver = JSON.parse(res.data).act === 'answer_finish'
-      })
-    }
+    this.initWs()
   },
   mounted() {
     this.AImessage = ""
     this.isOver = false
   },
   methods: {
-
+    initWs() {
+      const self = this
+      setTimeout(()=>{
+        const token = wx.getStorageSync('token');
+        if(token){
+          wx.connectSocket({
+            url: 'wss://ai-api.aitools666.com/chat',
+            header: {
+              'authorization': token
+            }
+          })
+          wx.onSocketOpen(function(res) {
+            console.log('WebSocket连接已打开！')
+          })
+          wx.onSocketMessage(function(res) {
+            self.AImessage = self.AImessage + JSON.parse(res.data).message
+            self.isOver = JSON.parse(res.data).act === 'answer_finish'
+          })
+        }else{
+          this.initWs()
+        }
+      },500)
+    }
   }
 }
 </script>
