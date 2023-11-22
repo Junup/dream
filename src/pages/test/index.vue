@@ -31,9 +31,9 @@ export default {
   methods: {
     initWs() {
       const self = this
-      setTimeout(()=>{
+      setTimeout(() => {
         const token = wx.getStorageSync('token');
-        if(token){
+        if (token) {
           wx.connectSocket({
             url: 'wss://ai-api.aitools666.com/chat',
             header: {
@@ -47,10 +47,10 @@ export default {
             self.AImessage = self.AImessage + JSON.parse(res.data).message
             self.isOver = JSON.parse(res.data).act === 'answer_finish'
           })
-        }else{
+        } else {
           this.initWs()
         }
-      },500)
+      }, 500)
     }
   }
 }
