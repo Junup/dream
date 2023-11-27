@@ -1,0 +1,1 @@
+<view class="page _div"><view class="htmlText _div">{{''+AImessage+''}}<block wx:if="{{!isOver}}"><label class="end _span"></label></block></view><view class="weui-btn-area  _div"><button class="weui-btn" type="primary" data-event-opts="{{[['tap',[['showTopTipsFun',['$event']]]]]}}" bindtap="__e">分享给好友</button></view></view>

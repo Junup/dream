@@ -1,0 +1,30 @@
+
+.page{
+  padding:2em
+}
+.htmlText{
+  height:70vh;
+  overflow:auto
+}
+.end::after{
+  content: "|";
+  -webkit-animation: blink .3s linear infinite alternate;
+          animation: blink .3s linear infinite alternate;
+}
+@-webkit-keyframes blink {
+0% {
+    opacity: 1;
+}
+100% {
+    opacity: 0;
+}
+}
+@keyframes blink {
+0% {
+    opacity: 1;
+}
+100% {
+    opacity: 0;
+}
+}
+
