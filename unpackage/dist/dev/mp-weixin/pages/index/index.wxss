@@ -5,10 +5,10 @@
 	align-items: center;
 	justify-content: center;
 }
-.input{
+.input {
 	position: relative;
 }
-.label{
+.label {
 	position: absolute;
 	top: 1vh;
 	left: 3vw;
@@ -28,30 +28,30 @@
 	display: flex;
 	justify-content: center;
 }
-.page{
+.page {
 	padding: 20px;
 	background-color: #efefef;
 	height: 100%;
 	position: absolute;
 }
-.text-style{ 
+.text-style {
 	font-size: 14px;
 	text-indent: 2em;
 	padding-top: 20px;
-	border:none;
+	border: none;
 	background-color: red;
 }
-.textarea-style{
+.textarea-style {
 	background-color: #fff;
 	padding: 10px;
 	width: 100%;
 	box-sizing: border-box;
 	border-radius: 5px;
 }
-.text-content{
-	margin:3vh 0;
+.text-content {
+	margin: 3vh 0;
 }
-.swiper{
+.swiper {
 	height: 30px;
 }
 .title-h5 {
@@ -60,9 +60,9 @@
 	margin: 5vh 0;
 	color: #000;
 }
-.submit{
+.submit {
 	background-color: #409eff;
-	color:#fff;
+	color: #fff;
 	position: fixed;
 	left: 0;
 	right: 0;

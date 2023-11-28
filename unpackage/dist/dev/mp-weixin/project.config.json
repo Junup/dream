@@ -18,8 +18,8 @@
     }
   },
   "compileType": "miniprogram",
-  "libVersion": "3.2.2",
-  "appid": "touristappid",
+  "libVersion": "3.2.1",
+  "appid": "wx75d2d05eccc42932",
   "projectname": "dream",
   "condition": {},
   "editorSetting": {
