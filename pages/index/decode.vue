@@ -1,9 +1,16 @@
 <template>
 	<div class="page">
-		<div class="htmlText" ref="content">
-			{{ AImessage }}
-			<span class="end" v-if="!isOver"></span>
-		</div>
+		<scroll-view scroll-y="true"  class="htmlText"
+		    :scroll-into-view="lastDiv" :scroll-top="scrollTop" scroll-with-animation="true">
+			<view ref="content" class="scrolls">
+				{{ AImessage }}
+				<span class="end" v-if="!isOver"></span>
+			 </view>
+			 <view id="last-div">
+				 
+			 </view>
+		</scroll-view>
+		
 		<div class="weui-btn-area ">
 			<button class="weui-btn" :loading="shareBtnLoading" type="primary" @click="showTopTipsFun">分享给好友</button>
 		</div>
@@ -17,6 +24,8 @@
 				AImessage: "",
 				isOver: false,
 				socketMsgQueue: [],
+				scrollTop:1,
+				lastDiv:'last-div',
 				shareBtnLoading : false
 			}
 		},
@@ -40,7 +49,8 @@
 			this.AImessage = ""
 			this.isOver = false
 			this.recordId = null
-
+	
+			
 		},
 		onUnload() {
 			this.socketMsgQueue = [];
@@ -48,6 +58,17 @@
 		},
 
 		methods: {
+			downScrollTop(){
+				let height = 0
+				const query = uni.createSelectorQuery().in(this);
+				query.select('.htmlText').boundingClientRect(data => {
+				  height = data.height
+				}).exec();
+				query.select('.scrolls').boundingClientRect(data => {
+				  this.scrollTop = data.height - height > 0 ? data.height - height : 0 
+				}).exec();
+				
+			},
 			initWs() {
 				const self = this
 				const token = wx.getStorageSync('token');
@@ -64,15 +85,16 @@
 					const response = JSON.parse(res.data)
 					if (response.act == 'answer') {
 						this.AImessage = this.AImessage + response.message
-						// this.$nextTick(() => {
-						// 	const content = this.$refs.content
-						// 	content.style.animation = 'scroll-bottom 0.5s ease-out forwards'
-						// 	content.scrollTop = content.scrollHeight
-						// })
+						this.$nextTick(() => {
+							this.downScrollTop()
+						})
 
 					} else if (response.act == 'answer_finish') {
 						this.isOver = true
 						this.recordId = response.payload.record_id
+						this.$nextTick(() => {
+							this.downScrollTop()
+						})
 					} else {
 						wx.showToast({
 							title: response.message,
