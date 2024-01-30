@@ -151,6 +151,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 var _default =
 {
   data: function data() {
@@ -192,14 +194,18 @@ var _default =
   },
 
   methods: {
-    downScrollTop: function downScrollTop() {var _this2 = this;
+    downScrollTop: function downScrollTop(isLog) {var _this2 = this;
       var height = 0;
       var query = uni.createSelectorQuery().in(this);
+
       query.select('.htmlText').boundingClientRect(function (data) {
         height = data.height;
       }).exec();
       query.select('.scrolls').boundingClientRect(function (data) {
-        _this2.scrollTop = data.height - height > 0 ? data.height - height : 0;
+        // if(!isLog){
+        // 	console.log( data.height , height , 0 , data.height + height , 0 )
+        // }
+        _this2.scrollTop = data.height - height > 0 ? data.height + height : 0;
       }).exec();
 
     },
@@ -226,9 +232,10 @@ var _default =
         } else if (response.act == 'answer_finish') {
           _this3.isOver = true;
           _this3.recordId = response.payload.record_id;
-          _this3.$nextTick(function () {
-            _this3.downScrollTop();
-          });
+          setTimeout(function () {
+            _this3.downScrollTop(false);
+          }, 500);
+
         } else {
           wx.showToast({
             title: response.message,

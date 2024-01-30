@@ -3,8 +3,10 @@
 		<scroll-view scroll-y="true"  class="htmlText"
 		    :scroll-into-view="lastDiv" :scroll-top="scrollTop" scroll-with-animation="true">
 			<view ref="content" class="scrolls">
-				{{ AImessage }}
-				<span class="end" v-if="!isOver"></span>
+				<text :user-select="true">
+					{{ AImessage }}<span class="end" v-if="!isOver"></span>
+				</text>
+				
 			 </view>
 			 <view id="last-div">
 				 
@@ -58,14 +60,18 @@
 		},
 
 		methods: {
-			downScrollTop(){
+			downScrollTop(isLog){
 				let height = 0
 				const query = uni.createSelectorQuery().in(this);
+				
 				query.select('.htmlText').boundingClientRect(data => {
 				  height = data.height
 				}).exec();
 				query.select('.scrolls').boundingClientRect(data => {
-				  this.scrollTop = data.height - height > 0 ? data.height - height : 0 
+					// if(!isLog){
+					// 	console.log( data.height , height , 0 , data.height + height , 0 )
+					// }
+				  this.scrollTop = data.height - height > 0 ? data.height +  height : 0 
 				}).exec();
 				
 			},
@@ -92,9 +98,10 @@
 					} else if (response.act == 'answer_finish') {
 						this.isOver = true
 						this.recordId = response.payload.record_id
-						this.$nextTick(() => {
-							this.downScrollTop()
-						})
+						setTimeout(() => {
+							this.downScrollTop(false)
+						},500)
+						 
 					} else {
 						wx.showToast({
 							title: response.message,
