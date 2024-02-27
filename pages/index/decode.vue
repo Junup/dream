@@ -28,24 +28,26 @@
 				socketMsgQueue: [],
 				scrollTop:1,
 				lastDiv:'last-div',
+				dream:"",
 				shareBtnLoading : false
 			}
 		},
-		computed: {
-
-		},
-		created() {
+		onLoad(options) {
+			this.dream = options.dream
 			this.initWs()
-			uni.$on('start-drame', (data) => {
-				this.socketMsgQueue.push({
-					"act": "start_generate",
-					"payload": {
-						"message": data.dream,
-						"template_name": "jiemeng"
-					}
-				})
-				this.sendMsg()
+			console.log(this.dream,"created")
+			this.socketMsgQueue.push({
+				"act": "start_generate",
+				"payload": {
+					"message": this.dream,
+					"template_name": "jiemeng"
+				}
 			})
+			this.sendMsg()
+			console.log(options.dream)
+	   },
+		created() {
+			
 		},
 		mounted() {
 			this.AImessage = ""

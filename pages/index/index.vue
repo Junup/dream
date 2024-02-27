@@ -69,8 +69,7 @@
 					// 获取用户信息
 					wx.getUserInfo({
 						success: res => {
-							const userInfo = res.userInfo;
-							console.log(userInfo);
+							const userInfo = res.userInfo;					
 							// 将 code 和 userInfo 发送给后台服务器
 							wx.request({
 								url: 'https://ai-api.aitools666.com/login',
@@ -103,9 +102,9 @@
 				}
 				const self = this
 				wx.navigateTo({
-					url: '/pages/index/decode',
+					url: '/pages/index/decode?dream='+self.dream,
 					success() {
-						uni.$emit('start-drame',{dream:self.dream})
+						//uni.$emit('start-drame',{dream:self.dream})
 					}
 				})
 				

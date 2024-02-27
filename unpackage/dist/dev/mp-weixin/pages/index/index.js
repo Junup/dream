@@ -138,7 +138,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
 //
 //
 //
@@ -210,7 +210,6 @@ var _default =
         wx.getUserInfo({
           success: function success(res) {
             var userInfo = res.userInfo;
-            console.log(userInfo);
             // 将 code 和 userInfo 发送给后台服务器
             wx.request({
               url: 'https://ai-api.aitools666.com/login',
@@ -243,14 +242,13 @@ var _default =
       }
       var self = this;
       wx.navigateTo({
-        url: '/pages/index/decode',
+        url: '/pages/index/decode?dream=' + self.dream,
         success: function success() {
-          uni.$emit('start-drame', { dream: self.dream });
+          //uni.$emit('start-drame',{dream:self.dream})
         } });
 
 
     } } };exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 /* 18 */

@@ -162,24 +162,26 @@ var _default =
       socketMsgQueue: [],
       scrollTop: 1,
       lastDiv: 'last-div',
+      dream: "",
       shareBtnLoading: false };
 
   },
-  computed: {},
-
-
-  created: function created() {var _this = this;
+  onLoad: function onLoad(options) {
+    this.dream = options.dream;
     this.initWs();
-    uni.$on('start-drame', function (data) {
-      _this.socketMsgQueue.push({
-        "act": "start_generate",
-        "payload": {
-          "message": data.dream,
-          "template_name": "jiemeng" } });
+    console.log(this.dream, "created");
+    this.socketMsgQueue.push({
+      "act": "start_generate",
+      "payload": {
+        "message": this.dream,
+        "template_name": "jiemeng" } });
 
 
-      _this.sendMsg();
-    });
+    this.sendMsg();
+    console.log(options.dream);
+  },
+  created: function created() {
+
   },
   mounted: function mounted() {
     this.AImessage = "";
@@ -194,7 +196,7 @@ var _default =
   },
 
   methods: {
-    downScrollTop: function downScrollTop(isLog) {var _this2 = this;
+    downScrollTop: function downScrollTop(isLog) {var _this = this;
       var height = 0;
       var query = uni.createSelectorQuery().in(this);
 
@@ -205,11 +207,11 @@ var _default =
         // if(!isLog){
         // 	console.log( data.height , height , 0 , data.height + height , 0 )
         // }
-        _this2.scrollTop = data.height - height > 0 ? data.height + height : 0;
+        _this.scrollTop = data.height - height > 0 ? data.height + height : 0;
       }).exec();
 
     },
-    initWs: function initWs() {var _this3 = this;
+    initWs: function initWs() {var _this2 = this;
       var self = this;
       var token = wx.getStorageSync('token');
       wx.connectSocket({
@@ -219,21 +221,21 @@ var _default =
 
 
       wx.onSocketOpen(function (res) {
-        _this3.sendMsg();
+        _this2.sendMsg();
       });
       wx.onSocketMessage(function (res) {
         var response = JSON.parse(res.data);
         if (response.act == 'answer') {
-          _this3.AImessage = _this3.AImessage + response.message;
-          _this3.$nextTick(function () {
-            _this3.downScrollTop();
+          _this2.AImessage = _this2.AImessage + response.message;
+          _this2.$nextTick(function () {
+            _this2.downScrollTop();
           });
 
         } else if (response.act == 'answer_finish') {
-          _this3.isOver = true;
-          _this3.recordId = response.payload.record_id;
+          _this2.isOver = true;
+          _this2.recordId = response.payload.record_id;
           setTimeout(function () {
-            _this3.downScrollTop(false);
+            _this2.downScrollTop(false);
           }, 500);
 
         } else {
@@ -255,7 +257,7 @@ var _default =
 
       }
     },
-    showTopTipsFun: function showTopTipsFun() {var _this4 = this;
+    showTopTipsFun: function showTopTipsFun() {var _this3 = this;
       if (!this.isOver) {
         wx.showToast({
           title: "请等待生成结束",
@@ -269,7 +271,7 @@ var _default =
       wx.downloadFile({
         url: 'https://ai-api.aitools666.com/generate-post?record_id=' + this.recordId,
         success: function success(res) {
-          _this4.shareBtnLoading = false;
+          _this3.shareBtnLoading = false;
           wx.showShareImageMenu({
             path: res.tempFilePath,
             fail: function fail(e) {
